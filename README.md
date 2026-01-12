@@ -33,6 +33,3 @@ The core logic resides in `src/MarkdownParser.ts`. It processes text chunks usin
 * **State Persistence:** Global variables track the current state (e.g., inside a code block) across different stream chunks.
 * **Buffering:** Special logic buffers characters like closing backticks to differentiate between a single backtick (inline code) and a triple backtick (code block closure).
 
-##  Demo
-
-![Streaming Parser Demo](https://via.placeholder.com/800x400?text=Run+the+app+to+see+streaming+in+action)
