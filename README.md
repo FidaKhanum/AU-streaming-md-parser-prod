@@ -1,53 +1,38 @@
-# streaming-markdown-parser
+# AU-streaming-md-parser-prod
+# Streaming Markdown Parser
 
-Please read this entire page.
+A robust, "optimistic" Markdown parser built to handle streaming text input (similar to ChatGPT or Claude). It styles markdown elements (like code blocks and headers) *immediately* as they are typed, rather than waiting for the closing tags.
 
-## Task
-Your task is to build a streaming Markdown parser. 
+## Features
 
-Imagine that ChatGPT/Claude/Cursor is streaming in chunks of Markdown text. You're writing the logic for parsing and styling that text on the fly.
+* **Optimistic Parsing:** Instantly detects and styles inline code (\`) and code blocks (\`\`\`) before the closing tags arrive.
+* **State Machine Logic:** Uses a custom state machine (`TEXT`, `INLINE`, `BLOCK`, `HEADER`) to handle complex parsing transitions token-by-token.
+* **Solid Block Rendering:** Handles newline logic correctly to ensure code blocks remain continuous and solid, even when streaming line breaks.
+* **Bonus Elements:** Supports **Bold** (`**text**`) and **Headers** (`#`, `##`, etc.) with correct styling.
+* **DOM Stability:** Appends new tokens to the existing DOM structure to allow text selection and copying while streaming.
 
-Please try to get the parsing logic for inline codeblocks (e.g. `print("hello world")`) and codeblocks (e.g. ```print("hello world")```) working. If you still have time after, please tackle other markdown elements (headings, italics, bold, lists).
+##  How to Run
 
-Your code goes in `src/MarkdownParser.ts`. You should edit the last method. The starter code streams in the raw markdown with no parsing and no styling.
+1.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
 
-## Instructions for running:
+2.  **Build the Project:**
+    ```bash
+    npm run build
+    ```
+    *(Note: On Windows, use `npx tsc` if the build script fails)*
 
-```
-npm install
-npm run build
-```
+3.  **Run:**
+    Open `dist/index.html` in your browser.
 
-Then open `dist/index.html` in your browser
+##  Technical Approach
 
-Then, to enable hot reloading:
-```
-npm run dev
-```
+The core logic resides in `src/MarkdownParser.ts`. It processes text chunks using a state-preserving loop:
+* **State Persistence:** Global variables track the current state (e.g., inside a code block) across different stream chunks.
+* **Buffering:** Special logic buffers characters like closing backticks to differentiate between a single backtick (inline code) and a triple backtick (code block closure).
 
-## Requirements
-1. Your parser should be optimistic. When you see the start of an inline code block or code block, you should immediately style the element accordingly.
-    - E.g. you should immediately display  `print("hello wor` instead of "\`print("hello wor."
-2. While the text is streamed in, the user should be able to select the text that has already been streamed in and copy it (i.e. you cannot replace the entire HTML DOM every time).
+##  Demo
 
-As a reminder, please try to get inline codeblocks and codeblocks working. These are single backticks and triple backticks. You should ignore italics, bold, headings, etc. until you've finished this.
-
-## What we care about
-
-You will be evaluated on:
-  * Did you submit something in time?
-  * How much did you get done in the alotted time? Were you on the right track? Did you get inline codeblocks and codeblocks working? 
-
-We do NOT care about:
-  * Your HTML/CSS/web skills
-    * Don't worry about the styling, focus on the parsing code and make sure inline codeblocks and codeblocks are visually differentiated on the screen in some way
-  * Code quality (mostly)
-    * Please choose fast over clean 
-  * Big o notation performance 
-  * Getting every single edge case 
-    * That said, you should handle the fact that tokens can split the triple backticks. And that there can be multiple state transitions within one token (e.g. backtick, word, backtick, word, tripple backtick is a valid token)
-
-## Other notes
-* You do not need any fancy algorithms or data structures for this. This problem is meant to be relatively straightforward, and your code's efficiency doesn't matter.
-* Feel free to use the Internet and an AI autocomplete (e.g. Cursor Tab, Copilot). Please do not use any frontier models (sonnet, 4o, o1, etc.). 
-* Don't import any dependencies.
+![Streaming Parser Demo](https://via.placeholder.com/800x400?text=Run+the+app+to+see+streaming+in+action)
